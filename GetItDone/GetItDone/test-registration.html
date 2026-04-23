@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Test - GetItDone</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 { color: #2563eb; margin-bottom: 10px; }
+        .status { 
+            padding: 15px; 
+            margin: 20px 0; 
+            border-radius: 8px; 
+            font-weight: 500;
+        }
+        .status.info { background: #dbeafe; color: #1e40af; border-left: 4px solid #3b82f6; }
+        .status.success { background: #d1fae5; color: #065f46; border-left: 4px solid #10b981; }
+        .status.error { background: #fee2e2; color: #991b1b; border-left: 4px solid #ef4444; }
+        button { 
+            background: #2563eb; 
+            color: white; 
+            padding: 12px 30px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 16px;
+            font-weight: 600;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        button:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); }
+        button:disabled { background: #9ca3af; cursor: not-allowed; transform: none; }
+        .test-data { 
+            background: #f9fafb; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin: 20px 0;
+            border: 1px solid #e5e7eb;
+        }
+        .test-data h3 { color: #374151; margin-bottom: 10px; font-size: 14px; }
+        .test-data pre { 
+            background: #1f2937; 
+            color: #10b981; 
+            padding: 12px; 
+            border-radius: 6px; 
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .response { 
+            margin-top: 20px; 
+            background: #f9fafb; 
+            padding: 15px; 
+            border-radius: 8px;
+            display: none;
+            border: 1px solid #e5e7eb;
+        }
+        .response.show { display: block; }
+        .response h3 { color: #374151; margin-bottom: 10px; }
+        .response pre { 
+            background: #1f2937; 
+            color: #e5e7eb; 
+            padding: 12px; 
+            border-radius: 6px; 
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .header { 
+            background: linear-gradient(135deg, #2563eb, #1d4ed8); 
+            color: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .header h1 { color: white; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Registration Test Page</h1>
+            <p>Test the GetItDone registration API</p>
+        </div>
+
+        <div id="server-status" class="status info">
+            Checking server connection...
+        </div>
+
+        <div class="test-data">
+            <h3>📋 Test Data (will be used for registration)</h3>
+            <pre>Full Name: Test User
+Email: test.user@example.com
+Phone: 9876543210
+Password: test123456
+Role: CLIENT
+Aadhaar: 123456789012
+UPI ID: test@paytm
+DOB: 1990-01-01</pre>
+        </div>
+
+        <button id="checkBtn" onclick="checkServers()">
+            Check Server Status
+        </button>
+        
+        <button id="testBtn" onclick="testRegistration()" disabled>
+            Test Registration
+        </button>
+
+        <button onclick="openApp()">
+            Open Registration Page
+        </button>
+
+        <div id="response" class="response">
+            <h3>Response:</h3>
+            <pre id="responseText"></pre>
+        </div>
+    </div>
+
+    <script>
+        let backendOk = false;
+        let frontendOk = false;
+
+        async function checkServers() {
+            const statusDiv = document.getElementById('server-status');
+            const testBtn = document.getElementById('testBtn');
+            const checkBtn = document.getElementById('checkBtn');
+            
+            checkBtn.innerHTML = '<span class="spinner"></span>Checking...';
+            checkBtn.disabled = true;
+            statusDiv.className = 'status info';
+            statusDiv.innerHTML = 'Checking servers...';
+
+            // Check backend
+            try {
+                const backendRes = await fetch('http://localhost:8080/api/auth/login', {
+                    method: 'OPTIONS'
+                });
+                backendOk = true;
+            } catch (e) {
+                backendOk = false;
+            }
+
+            // Check frontend
+            try {
+                const frontendRes = await fetch('http://localhost:5173/');
+                frontendOk = true;
+            } catch (e) {
+                frontendOk = false;
+            }
+
+            // Update status
+            if (backendOk && frontendOk) {
+                statusDiv.className = 'status success';
+                statusDiv.innerHTML = '✅ Both servers are running!<br>Backend: http://localhost:8080<br>Frontend: http://localhost:5173';
+                testBtn.disabled = false;
+            } else if (backendOk) {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = '⚠️ Backend is running but Frontend is NOT.<br>Start frontend with: npm run dev';
+            } else if (frontendOk) {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = '⚠️ Frontend is running but Backend is NOT.<br>Start backend with: mvnw spring-boot:run';
+            } else {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = '❌ Both servers are NOT running!<br>Please start both servers first.';
+            }
+
+            checkBtn.innerHTML = 'Re-check Server Status';
+            checkBtn.disabled = false;
+        }
+
+        async function testRegistration() {
+            const responseDiv = document.getElementById('response');
+            const responseText = document.getElementById('responseText');
+            const testBtn = document.getElementById('testBtn');
+            
+            testBtn.innerHTML = '<span class="spinner"></span>Testing...';
+            testBtn.disabled = true;
+            responseDiv.classList.add('show');
+            responseText.textContent = 'Sending registration request...';
+
+            try {
+                // Create FormData
+                const formData = new FormData();
+                formData.append('fullName', 'Test User');
+                formData.append('email', 'test.user@example.com');
+                formData.append('phoneNumber', '9876543210');
+                formData.append('password', 'test123456');
+                formData.append('role', 'CLIENT');
+                formData.append('aadhaarNo', '123456789012');
+                formData.append('upiId', 'test@paytm');
+                formData.append('dob', '1990-01-01');
+
+                // Send request
+                const response = await fetch('http://localhost:8080/api/auth/register', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.text();
+                
+                // Show response
+                let resultText = `Status: ${response.status} ${response.statusText}\n\n`;
+                resultText += `Response:\n${data}\n\n`;
+                
+                if (response.ok) {
+                    resultText += '✅ SUCCESS! User registered successfully!\n\n';
+                    resultText += 'You can now:\n';
+                    resultText += '1. Check PostgreSQL database for new user\n';
+                    resultText += '2. Try logging in with:\n';
+                    resultText += '   Email: test.user@example.com\n';
+                    resultText += '   Password: test123456';
+                    
+                    responseDiv.style.borderLeft = '4px solid #10b981';
+                    responseDiv.style.background = '#d1fae5';
+                } else {
+                    resultText += '❌ FAILED! Registration did not succeed.\n\n';
+                    resultText += 'Possible issues:\n';
+                    resultText += '- Email already exists in database\n';
+                    resultText += '- Validation error\n';
+                    resultText += '- Backend error\n\n';
+                    resultText += 'Check backend terminal for error details.';
+                    
+                    responseDiv.style.borderLeft = '4px solid #ef4444';
+                    responseDiv.style.background = '#fee2e2';
+                }
+                
+                responseText.textContent = resultText;
+                
+            } catch (error) {
+                responseText.textContent = `❌ ERROR!\n\n${error.message}\n\nPossible causes:\n- Backend server not running on port 8080\n- CORS issue\n- Network error`;
+                responseDiv.style.borderLeft = '4px solid #ef4444';
+                responseDiv.style.background = '#fee2e2';
+            } finally {
+                testBtn.innerHTML = 'Test Registration Again';
+                testBtn.disabled = false;
+            }
+        }
+
+        function openApp() {
+            window.open('http://localhost:5173/register', '_blank');
+        }
+
+        // Auto-check on load
+        window.addEventListener('load', () => {
+            setTimeout(checkServers, 500);
+        });
+    </script>
+</body>
+</html>

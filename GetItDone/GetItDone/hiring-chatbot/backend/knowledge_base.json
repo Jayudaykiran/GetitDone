@@ -1,0 +1,65 @@
+[
+  {
+    "id": "kb_post_job",
+    "title": "How employers post a job",
+    "content": "Employers can post a job in 4 steps: (1) Sign in with your business email account. (2) Choose worker category, job location, date/time, and budget. (3) Add job details and required skills. (4) Review and publish the job, then track applications from dashboard.",
+    "tags": ["employer", "post job", "find_worker"],
+    "suggested_actions": ["Post a Job", "Browse Worker Categories"]
+  },
+  {
+    "id": "kb_apply_job",
+    "title": "How workers apply for a job",
+    "content": "Workers can apply in 4 steps: (1) Sign in with phone number and complete profile. (2) Browse jobs by category and location. (3) Open a job card, check pay and timing, and tap Apply. (4) Track application updates in your dashboard.",
+    "tags": ["worker", "apply", "find_job"],
+    "suggested_actions": ["Apply Now", "View Nearby Jobs"]
+  },
+  {
+    "id": "kb_categories",
+    "title": "Supported job categories",
+    "content": "Current categories include plumber, electrician, cook, driver, security guard, cleaner, carpenter, and painter.",
+    "tags": ["categories", "worker", "employer", "faq"],
+    "suggested_actions": ["Browse Categories"]
+  },
+  {
+    "id": "kb_payment",
+    "title": "Payment and payout policy",
+    "content": "Workers are paid within 24 hours of confirmed job completion. Payout modes: UPI and bank transfer. Employers can view payment status in job details.",
+    "tags": ["payment", "payout", "salary", "payment_query"],
+    "suggested_actions": ["Check Payment Status", "View Payment Methods"]
+  },
+  {
+    "id": "kb_verification",
+    "title": "Worker verification process",
+    "content": "Workers submit a government ID and skill proof document. Verification is completed in 12 to 24 hours. Verified workers are prioritized in search results.",
+    "tags": ["verification", "worker", "onboarding"],
+    "suggested_actions": ["Upload Verification Documents"]
+  },
+  {
+    "id": "kb_cancellation",
+    "title": "Cancellation policy",
+    "content": "Jobs can be canceled at least 2 hours before the job start time without penalty. Late cancellations may affect reliability scores.",
+    "tags": ["cancellation", "policy", "faq"],
+    "suggested_actions": ["Manage Booking"]
+  },
+  {
+    "id": "kb_complaint",
+    "title": "Complaint and issue resolution",
+    "content": "Users can report issues through chatbot support or email support@app.com. Typical resolution time is within 48 hours. Include job ID and a short description for faster help.",
+    "tags": ["complaint", "issue", "support"],
+    "suggested_actions": ["Report an Issue", "Contact Support"]
+  },
+  {
+    "id": "kb_registration",
+    "title": "Registration rules",
+    "content": "Employers register with business email. Workers register with mobile phone number. Both must verify OTP to activate account.",
+    "tags": ["registration", "signup", "registration_help"],
+    "suggested_actions": ["Start Registration"]
+  },
+  {
+    "id": "kb_status",
+    "title": "Job status checks",
+    "content": "To check job status, users should provide job ID. Common statuses: posted, assigned, in_progress, completed, canceled.",
+    "tags": ["status", "job_status"],
+    "suggested_actions": ["Share Job ID"]
+  }
+]

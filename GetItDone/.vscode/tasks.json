@@ -1,0 +1,15 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Backend",
+			"type": "shell",
+			"command": "mvnw.cmd",
+			"args": [
+				"spring-boot:run"
+			],
+			"isBackground": true,
+			"group": "build"
+		}
+	]
+}
